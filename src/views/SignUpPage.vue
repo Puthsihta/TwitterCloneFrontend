@@ -34,6 +34,7 @@
                 type="text"
                 id="FirstName"
                 name="first_name"
+                v-model="firstName"
                 class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
                 placeholder="Jonh" />
             </div>
@@ -49,13 +50,14 @@
                 type="text"
                 id="LastName"
                 name="last_name"
+                v-model="lastName"
                 class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
                 placeholder="Weak" />
             </div>
 
             <div class="col-span-6">
               <label
-                for="Email"
+                for="email"
                 class="block text-sm font-medium text-gray-700">
                 Email
               </label>
@@ -64,6 +66,7 @@
                 type="email"
                 id="Email"
                 name="email"
+                v-model="email"
                 class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
                 placeholder="example@gmail.com" />
             </div>
@@ -79,6 +82,7 @@
                 type="password"
                 id="Password"
                 name="password"
+                v-model="password"
                 class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
                 placeholder="******" />
             </div>
@@ -95,6 +99,7 @@
                 id="PasswordConfirmation"
                 name="password_confirmation"
                 placeholder="******"
+                v-model="passwordConfirmation"
                 class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4" />
             </div>
 
@@ -127,10 +132,12 @@
             </div>
 
             <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-              <button
-                class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+              <div
+                type="submit"
+                @click="handleSingUp"
+                class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 cursor-pointer">
                 Create an account
-              </button>
+              </div>
 
               <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                 Already have an account?
@@ -149,7 +156,55 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "pinia";
+import { userStore } from "../store/user";
 export default {
   name: "SignUpPage",
+  data() {
+    return {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      passwordConfirmation: "",
+    };
+  },
+  methods: {
+    checkUser() {
+      let isExit = false;
+      this.getUsers.forEach((user) => {
+        if (user.email == this.email) {
+          isExit = true;
+        }
+        return isExit;
+      });
+    },
+    handleSingUp() {
+      // console.log("check user : ", this.checkUser());
+      let isExit = false;
+      this.getUsers.forEach((user) => {
+        if (user.email == this.email) {
+          isExit = true;
+        }
+        return isExit;
+      });
+      console.log("isExit : ", isExit);
+      if (!isExit) {
+        let user = {
+          first_name: this.firstName,
+          last_name: this.lastName,
+          email: this.email,
+          password: this.password,
+        };
+        this.storeUser(user);
+      } else {
+        alert("This Email is already exits");
+      }
+    },
+    ...mapActions(userStore, ["storeUser"]),
+  },
+  computed: {
+    ...mapState(userStore, ["getUsers"]),
+  },
 };
 </script>
