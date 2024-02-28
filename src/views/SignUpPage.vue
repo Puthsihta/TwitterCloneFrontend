@@ -232,12 +232,13 @@ export default {
           password: this.password,
         };
         this.storeUser(user);
+        this.storeCurrentUser(user);
         this.$router.push("/home");
       } else {
         alert("This Email is already exits");
       }
     },
-    ...mapActions(userStore, ["storeUser"]),
+    ...mapActions(userStore, ["storeUser", "storeCurrentUser"]),
   },
   computed: {
     ...mapState(userStore, ["getUsers"]),
