@@ -157,13 +157,20 @@ export default {
         return;
       }
       let isExit = false;
+      let currentUser = {};
       this.getUsers.forEach((user) => {
         if (user.email == this.email && user.password == this.password) {
           isExit = true;
+          currentUser = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+          };
         }
         return isExit;
       });
       if (isExit) {
+        this.storeCurrentUser(currentUser);
         this.$router.push("/home");
       } else {
         alert("Email or Password is incorrect!");
