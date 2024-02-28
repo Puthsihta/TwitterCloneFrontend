@@ -5,10 +5,10 @@
       id="leftbar"
       class="lg:w-1/5 border-r border-lighter px-2 lg:px-6 py-2 flex flex-col justify-between">
       <div>
-        <button
+        <!-- <button
           class="h-12 w-12 hover:bg-lightblue text-3xl rounded-full text-blue">
           <i class="fab fa-twitter"></i>
-        </button>
+        </button> -->
         <div>
           <button
             :key="tab"
@@ -25,7 +25,7 @@
         </div>
         <button
           class="text-white bg-blue rounded-full font-semibold focus:outline-none lg:h-auto lg:w-full p-3 hover:bg-darkblue">
-          <p class="hidden lg:block">Tweet</p>
+          <p class="hidden lg:block">Post</p>
           <i class="fas fa-plus lg:hidden"></i>
         </button>
       </div>
@@ -39,12 +39,17 @@
             alt=""
             class="w-12 h-12 rounded-full border border-lighter" />
           <div class="hidden lg:block ml-4">
-            <p class="text-sm font-bold leading-tight">Baed Savitar</p>
-            <p class="text-sm leading-tight">@thinker732</p>
+            <p class="text-sm font-bold leading-tight">
+              {{ getCurrentUser.first_name + " " + getCurrentUser.last_name }}
+            </p>
+            <p class="text-sm text-left">
+              <!-- {{ user_name.toLowerCase().trim() }} -->
+              {{ getCurrentUser.first_name.toLowerCase() }}
+            </p>
           </div>
-          <i class="hidden lg:block fas fa-angle-down ml-auto text-lg"></i>
+          <!-- <i class="hidden lg:block fas fa-angle-down ml-auto text-lg"></i> -->
         </button>
-
+        <!-- popup modal -->
         <div
           v-if="appear === true"
           class="absolute bottom-0 left-0 w-64 round-lg shadow-xl border-lightest bg-white mb-16">
@@ -75,13 +80,9 @@
       </div>
     </div>
     <!-- middle -->
-    <div id="tweets" class="w-1/2 h-full overflow-y-scroll">
+    <div id="tweets" class="w-full lg:w-1/2 h-full overflow-y-scroll">
       <div
-        class="px-5 py-2 border-b border-lighter flex items-center justify-between">
-        <h1 class="text-xl font-bold">Home</h1>
-        <i class="far fa-star text-xl text-blue"></i>
-      </div>
-      <div class="px-5 py-3 border-b-8 border-lighter flex">
+        class="px-5 py-3 border-b-8 border-lighter flex sticky top-0 z-10 bg-white">
         <div class="flex-none">
           <img
             src="dark.jpg"
@@ -190,14 +191,18 @@
     <!-- rightbar -->
     <div
       id="trending"
-      class="md:block hidden w-1/3 h-full border-l border-lighter px-2 px-6 pt-8 overflow-y-scroll relative">
-      <input
-        class="pl-12 rounded-full w-full p-2 text-sm mb-4 bg-lighter focus:outline-none"
-        placeholder="search" />
-      <i
-        class="fa fa-search absolute left-0 top-0 mt-12 ml-12 text-sm text-light">
-      </i>
-
+      class="lg:block hidden w-1/3 h-full border-l bg-white border-lighter px-6 pt-8 overflow-y-scroll relative">
+      <div class="mb-6 relative bg-white">
+        <input
+          type="text"
+          v-model="searchQuery"
+          @input="handleInput"
+          placeholder="Search..."
+          class="px-4 py-2 rounded-full w-full text-sm bg-lighter focus:outline-none pl-10" />
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <i class="fa fa-search text-sm text-light"> </i>
+        </div>
+      </div>
       <div class="w-full rounded-lg bg-lightest" id="tendances">
         <div class="flex items-center justify-between p-3">
           <p class="text-lg font-bold">Trends for You</p>
@@ -257,6 +262,9 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
+import { userStore } from "../store/user";
+
 export default {
   name: "HomePage",
   data() {
@@ -339,6 +347,9 @@ export default {
       ],
       tweets: [{ content: "Hello twitter", time: "2min" }],
       tweet: { content: "" },
+      // user_name: this.getCurrentUser.first_name + this.getCurrentUser.last_name,
+      // full_name:
+      //   this.getCurrentUser.first_name + " " + this.getCurrentUser.last_name,
     };
   },
   methods: {
@@ -349,6 +360,12 @@ export default {
       };
       this.tweets.push(newTweet);
     },
+  },
+  computed: {
+    ...mapState(userStore, ["getCurrentUser"]),
+  },
+  created() {
+    console.log("create user : ", this.getCurrentUser);
   },
 };
 </script>
