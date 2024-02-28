@@ -1,4 +1,5 @@
 <template>
+  <Alert :msg="msg" :des="des" />
   <section class="bg-white">
     <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
       <aside
@@ -158,10 +159,17 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { userStore } from "../store/user";
+import Alert from "../components/Alert.vue";
+
 export default {
+  components: { Alert },
   name: "SignUpPage",
   data() {
     return {
+      warning: {
+        msg: "",
+        des: "",
+      },
       firstName: "",
       lastName: "",
       email: "",
@@ -181,6 +189,34 @@ export default {
     },
     handleSingUp() {
       // console.log("check user : ", this.checkUser());
+      if (this.firstName.trim().length == 0) {
+        alert("First Name is required");
+        return;
+      }
+      if (this.lastName.trim().length == 0) {
+        alert("Last Name is required");
+        return;
+      }
+      if (this.lastName.trim().length == 0) {
+        alert("Last Name is required");
+        return;
+      }
+      if (this.email.trim().length == 0) {
+        alert("Email is required");
+        return;
+      }
+      if (this.password.trim().length == 0) {
+        alert("Password is required");
+        return;
+      }
+      if (this.passwordConfirmation.trim().length == 0) {
+        alert("Confirm Password is required");
+        return;
+      }
+      if (this.passwordConfirmation != this.password) {
+        alert("Confirm Password is not match");
+        return;
+      }
       let isExit = false;
       this.getUsers.forEach((user) => {
         if (user.email == this.email) {
@@ -188,7 +224,6 @@ export default {
         }
         return isExit;
       });
-      console.log("isExit : ", isExit);
       if (!isExit) {
         let user = {
           first_name: this.firstName,
@@ -197,6 +232,7 @@ export default {
           password: this.password,
         };
         this.storeUser(user);
+        this.$router.push("/home");
       } else {
         alert("This Email is already exits");
       }
