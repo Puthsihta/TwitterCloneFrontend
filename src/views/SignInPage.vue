@@ -1,5 +1,5 @@
 <template>
-  <Alert :msg="msg" :des="des" />
+  <Alert v-if="msg && des" :msg="msg" :des="des" />
   <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-lg">
       <h1 class="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">
@@ -140,6 +140,12 @@ export default {
       showPassword: false,
     };
   },
+  updated() {
+    setTimeout(() => {
+      this.msg = "";
+      this.des = "";
+    }, 3000);
+  },
   methods: {
     navigateSingUP() {
       this.$router.push("/signup");
@@ -149,11 +155,13 @@ export default {
     },
     navigatorHome() {
       if (this.email.trim().length == 0) {
-        alert("Email is required");
+        this.msg = "Email";
+        this.des = "Email is required, please enter your email!";
         return;
       }
       if (this.password.trim().length == 0) {
-        alert("Password is required");
+        this.msg = "Password";
+        this.des = "Password is required, please enter your password!";
         return;
       }
       let isExit = false;
@@ -162,8 +170,8 @@ export default {
         if (user.email == this.email && user.password == this.password) {
           isExit = true;
           currentUser = {
-            firstName: user.firstName,
-            lastName: user.lastName,
+            first_name: user.first_name,
+            last_name: user.last_name,
             email: user.email,
           };
         }
@@ -173,7 +181,9 @@ export default {
         this.storeCurrentUser(currentUser);
         this.$router.push("/home");
       } else {
-        alert("Email or Password is incorrect!");
+        this.msg = "Incorrect";
+        this.des =
+          "Email or Password is incorrect!, please check your email or password!";
       }
       // this.$router.push("/home");
     },
