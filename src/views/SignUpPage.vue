@@ -3,27 +3,26 @@
   <section class="bg-white">
     <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
       <aside
-        class="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+        class="relative h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6 hidden lg:block">
         <img
           alt=""
-          src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-          class="absolute inset-0 h-full w-full object-cover" />
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/512px-Logo_of_Twitter.svg.png"
+          class="absolute inset-0 h-full w-2/3 object-contain" />
       </aside>
 
       <main
-        class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-        <div class="max-w-xl lg:max-w-3xl">
+        class="flex items-center justify-center lg:col-span-7 xl:col-span-6 lg: mt-10">
+        <div class="max-w-full lg:max-w-full">
           <h1
             class="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-            Welcome to X
+            Welcome to Twitter
           </h1>
 
           <p class="mt-4 leading-relaxed text-gray-500">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-            nam dolorum aliquam, quibusdam aperiam voluptatum.
+            Please fill in your infromation, to gt start with us
           </p>
 
-          <form action="#" class="mt-8 grid grid-cols-6 gap-6">
+          <form action="#" class="mt-8 grid grid-cols-2 gap-6">
             <div class="col-span-6 sm:col-span-3">
               <label
                 for="FirstName"
@@ -36,7 +35,7 @@
                 id="FirstName"
                 name="first_name"
                 v-model="firstName"
-                class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
+                class="mt-1 w-full rounded-full border-gray-200 bg-white text-sm text-gray-700 shadow-md p-4"
                 placeholder="Jonh" />
             </div>
 
@@ -52,7 +51,7 @@
                 id="LastName"
                 name="last_name"
                 v-model="lastName"
-                class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
+                class="mt-1 w-full rounded-full border-gray-200 bg-white text-sm text-gray-700 shadow-md p-4"
                 placeholder="Weak" />
             </div>
 
@@ -68,7 +67,7 @@
                 id="Email"
                 name="email"
                 v-model="email"
-                class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
+                class="mt-1 w-full rounded-full border-gray-200 bg-white text-sm text-gray-700 shadow-md p-4"
                 placeholder="example@gmail.com" />
             </div>
 
@@ -84,7 +83,7 @@
                 id="Password"
                 name="password"
                 v-model="password"
-                class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4"
+                class="mt-1 w-full rounded-full border-gray-200 bg-white text-sm text-gray-700 shadow-md p-4"
                 placeholder="******" />
             </div>
 
@@ -101,45 +100,17 @@
                 name="password_confirmation"
                 placeholder="******"
                 v-model="passwordConfirmation"
-                class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-4" />
+                class="mt-1 w-full rounded-full border-gray-200 bg-white text-sm text-gray-700 shadow-md p-4" />
             </div>
 
-            <div class="col-span-6">
-              <label for="MarketingAccept" class="flex gap-4">
-                <input
-                  type="checkbox"
-                  id="MarketingAccept"
-                  name="marketing_accept"
-                  class="size-5 rounded-md border-gray-200 bg-white shadow-sm" />
-
-                <span class="text-sm text-gray-700">
-                  I want to receive emails about events, product updates and
-                  company announcements.
-                </span>
-              </label>
-            </div>
-
-            <div class="col-span-6">
-              <p class="text-sm text-gray-500">
-                By creating an account, you agree to our
-                <a class="text-gray-700 underline cursor-pointer">
-                  terms and conditions
-                </a>
-                and
-                <a class="text-gray-700 underline cursor-pointer"
-                  >privacy policy</a
-                >.
-              </p>
-            </div>
-
-            <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
+            <div class="col-span-6 sm:items-center sm:gap-4">
               <div
                 @click="handleSingUp"
-                class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue focus:outline-none focus:ring active:text-blue-500 cursor-pointer">
-                Create an account
+                class="shrink-0 text-center shadow-md rounded-full border border-blue-600 bg-blue px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue hover:border-blue focus:outline-none focus:ring active:text-blue-500 cursor-pointer">
+                Sing up
               </div>
 
-              <p class="mt-4 text-sm text-gray-500 sm:mt-0">
+              <p class="mt-4 text-sm text-gray-500 lg:mt-4 text-center">
                 Already have an account?
                 <a
                   @click="$router.go(-1)"
