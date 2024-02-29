@@ -1,5 +1,5 @@
 <template>
-  <Alert :msg="msg" :des="des" />
+  <Alert v-if="msg && des" :msg="msg" :des="des" />
   <section class="bg-white">
     <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
       <aside
@@ -134,9 +134,8 @@
 
             <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
               <div
-                type="submit"
                 @click="handleSingUp"
-                class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 cursor-pointer">
+                class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue focus:outline-none focus:ring active:text-blue-500 cursor-pointer">
                 Create an account
               </div>
 
@@ -166,16 +165,20 @@ export default {
   name: "SignUpPage",
   data() {
     return {
-      warning: {
-        msg: "",
-        des: "",
-      },
+      msg: "",
+      des: "",
       firstName: "",
       lastName: "",
       email: "",
       password: "",
       passwordConfirmation: "",
     };
+  },
+  updated() {
+    setTimeout(() => {
+      this.msg = "";
+      this.des = "";
+    }, 3000);
   },
   methods: {
     checkUser() {
@@ -190,31 +193,34 @@ export default {
     handleSingUp() {
       // console.log("check user : ", this.checkUser());
       if (this.firstName.trim().length == 0) {
-        alert("First Name is required");
+        this.msg = "First Name";
+        this.des = "First Name is required, please enter your first name!";
         return;
       }
       if (this.lastName.trim().length == 0) {
-        alert("Last Name is required");
-        return;
-      }
-      if (this.lastName.trim().length == 0) {
-        alert("Last Name is required");
+        this.msg = "Last Name";
+        this.des = "Last Name is required, please enter your last name!";
         return;
       }
       if (this.email.trim().length == 0) {
-        alert("Email is required");
+        this.msg = "Email";
+        this.des = "Email is required, please enter your email!";
         return;
       }
       if (this.password.trim().length == 0) {
-        alert("Password is required");
+        this.msg = "Password";
+        this.des = "Password is required, please enter your password!";
         return;
       }
       if (this.passwordConfirmation.trim().length == 0) {
-        alert("Confirm Password is required");
+        this.msg = "Confirm Password";
+        this.des =
+          "Confirm Password is required, please enter your confirm password!";
         return;
       }
       if (this.passwordConfirmation != this.password) {
-        alert("Confirm Password is not match");
+        this.msg = "Incorrect Password";
+        this.des = "Confirm Password is not match with the password!";
         return;
       }
       let isExit = false;
@@ -235,7 +241,8 @@ export default {
         this.storeCurrentUser(user);
         this.$router.push("/home");
       } else {
-        alert("This Email is already exits");
+        this.msg = "Invail";
+        this.des = "This Email is already exits, Try another!";
       }
     },
     ...mapActions(userStore, ["storeUser", "storeCurrentUser"]),
