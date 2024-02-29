@@ -72,7 +72,7 @@
             Add an Account
           </button>
           <button
-            @click="appear = false"
+            @click="handleLogout"
             class="w-full focus:outline-none text-left hover:bg-lightest border-t border-lighter p-3 text-sm">
             Log Out
           </button>
@@ -102,8 +102,8 @@
           </div>
           <button
             type="submit"
-            class="h-10 px-4 text-white font-semibold bg-blue hover:bg-darblue focus:outline-none rounded-full absolute absolute bottom-0 right-0">
-            Tweet
+            class="h-10 px-4 text-white font-semibold bg-blue hover:bg-darblue focus:outline-none rounded-full absolute bottom-0 right-0">
+            Post
           </button>
         </form>
       </div>
@@ -117,8 +117,12 @@
           </div>
           <div class="w-full">
             <div class="flex items-center w-full">
-              <p class="font-semibold">Baed Savitar</p>
-              <p class="text-sm text-dark ml-2">@thinker732</p>
+              <p class="font-semibold">
+                {{ getCurrentUser.first_name + " " + getCurrentUser.last_name }}
+              </p>
+              <p class="text-sm text-dark ml-2">
+                @{{ getCurrentUser.first_name.toLowerCase() }}
+              </p>
               <p class="text-sm text-dark ml-2">{{ tweet.time }}</p>
               <i class="fas fa-angle-down text-dark ml-auto"></i>
             </div>
@@ -354,11 +358,20 @@ export default {
   },
   methods: {
     addNewTweet() {
+      if (this.tweet.content.trim().length == 0) {
+        this.tweet.content = "";
+        return;
+      }
       let newTweet = {
         content: this.tweet.content,
         time: "1sec",
       };
       this.tweets.push(newTweet);
+      this.tweet.content = "";
+    },
+    handleLogout() {
+      this.appear = false;
+      this.$router.replace("/");
     },
   },
   computed: {
