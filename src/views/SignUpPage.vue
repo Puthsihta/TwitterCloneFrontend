@@ -127,9 +127,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "pinia";
+import { mapActions } from "pinia";
 import { userStore } from "../store/user";
 import Alert from "../components/Alert.vue";
+import { tokenStore } from "../store/token";
 
 export default {
   components: { Alert },
@@ -152,16 +153,7 @@ export default {
     }, 3000);
   },
   methods: {
-    checkUser() {
-      let isExit = false;
-      this.getUsers.forEach((user) => {
-        if (user.email == this.email) {
-          isExit = true;
-        }
-        return isExit;
-      });
-    },
-    handleSingUp() {
+    async handleSingUp() {
       // console.log("check user : ", this.checkUser());
       if (this.firstName.trim().length == 0) {
         this.msg = "First Name";
@@ -194,32 +186,31 @@ export default {
         this.des = "Confirm Password is not match with the password!";
         return;
       }
-      let isExit = false;
-      this.getUsers.forEach((user) => {
-        if (user.email == this.email) {
-          isExit = true;
-        }
-        return isExit;
-      });
-      if (!isExit) {
-        let user = {
-          first_name: this.firstName,
-          last_name: this.lastName,
-          email: this.email,
-          password: this.password,
-        };
-        this.storeUser(user);
-        this.storeCurrentUser(user);
-        this.$router.push("/home");
-      } else {
-        this.msg = "Invail";
-        this.des = "This Email is already exits, Try another!";
-      }
+      let user = {
+        email: this.email,
+        username: this.firstName + this.lastName,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        password: this.password,
+        confirmedPassword: this.passwordConfirmation,
+      };
+      await this.register(user)
+        .then((respone) => {
+          if (respone.message) {
+            this.storeToken(respone.token);
+            this.storeCurrentUser(respone.data);
+            this.$router.push("/home");
+          } else {
+            this.msg = "Invalid";
+            this.des = respone.errors.msg;
+          }
+        })
+        .catch((err) => {
+          console.log("error: " + err);
+        });
     },
-    ...mapActions(userStore, ["storeUser", "storeCurrentUser"]),
-  },
-  computed: {
-    ...mapState(userStore, ["getUsers"]),
+    ...mapActions(userStore, ["storeCurrentUser", "register"]),
+    ...mapActions(tokenStore, ["storeToken"]),
   },
 };
 </script>

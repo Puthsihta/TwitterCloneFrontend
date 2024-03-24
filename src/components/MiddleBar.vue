@@ -38,10 +38,10 @@
         <div class="w-full">
           <div class="flex items-center w-full">
             <p class="font-semibold">
-              {{ getCurrentUser.first_name + " " + getCurrentUser.last_name }}
+              {{ getCurrentUser.username }}
             </p>
             <p class="text-sm text-dark ml-2">
-              @{{ getCurrentUser.first_name.toLowerCase() }}
+              @{{ getCurrentUser.username.toLowerCase() }}
             </p>
             <p class="text-sm text-dark ml-2">{{ tweet.time }}</p>
             <i class="fas fa-angle-down text-dark ml-auto"></i>

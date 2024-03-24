@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 
 export const userStore = defineStore("user", {
   state: () => ({
@@ -15,6 +16,30 @@ export const userStore = defineStore("user", {
     },
     storeCurrentUser(user) {
       this.currentUser = user;
+    },
+    async login(user) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("http://localhost:8000/api/auth/login", user)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    async register(user) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("http://localhost:8000/api/auth/register", user)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     },
   },
 });

@@ -34,11 +34,11 @@
           class="w-12 h-12 rounded-full border border-lighter" />
         <div class="hidden lg:block ml-4">
           <p class="text-sm font-bold leading-tight">
-            {{ getCurrentUser.first_name + " " + getCurrentUser.last_name }}
+            {{ getCurrentUser.username.toUpperCase() }}
           </p>
           <p class="text-sm text-left">
             <!-- {{ user_name.toLowerCase().trim() }} -->
-            {{ getCurrentUser.first_name.toLowerCase() }}
+            {{ getCurrentUser.username.toLowerCase() }}
           </p>
         </div>
         <!-- <i class="hidden lg:block fas fa-angle-down ml-auto text-lg"></i> -->

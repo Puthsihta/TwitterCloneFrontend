@@ -130,8 +130,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "pinia";
+import { mapActions } from "pinia";
 import { userStore } from "../store/user";
+import { tokenStore } from "../store/token";
 import Alert from "../components/Alert.vue";
 
 export default {
@@ -153,13 +154,13 @@ export default {
     }, 3000);
   },
   methods: {
-    navigateSingUP() {
+    async navigateSingUP() {
       this.$router.push("/signup");
     },
     toggleShow() {
       this.showPassword = !this.showPassword;
     },
-    navigatorHome() {
+    async navigatorHome() {
       if (this.email.trim().length == 0) {
         this.msg = "Email";
         this.des = "Email is required, please enter your email!";
@@ -170,33 +171,27 @@ export default {
         this.des = "Password is required, please enter your password!";
         return;
       }
-      let isExit = false;
-      let currentUser = {};
-      this.getUsers.forEach((user) => {
-        if (user.email == this.email && user.password == this.password) {
-          isExit = true;
-          currentUser = {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-          };
-        }
-        return isExit;
-      });
-      if (isExit) {
-        this.storeCurrentUser(currentUser);
-        this.$router.push("/home");
-      } else {
-        this.msg = "Incorrect";
-        this.des =
-          "Email or Password is incorrect!, please check your email or password!";
-      }
-      // this.$router.push("/home");
+      let user = {
+        email: this.email,
+        password: this.password,
+      };
+      await this.login(user)
+        .then((respone) => {
+          if (respone.message) {
+            this.storeToken(respone.token);
+            this.storeCurrentUser(respone.data);
+            this.$router.push("/home");
+          } else {
+            this.msg = "Incorrect";
+            this.des = respone.errors.msg;
+          }
+        })
+        .catch((err) => {
+          console.log("error: " + err);
+        });
     },
-    ...mapActions(userStore, ["storeCurrentUser"]),
-  },
-  computed: {
-    ...mapState(userStore, ["getUsers"]),
+    ...mapActions(userStore, ["storeCurrentUser", "login"]),
+    ...mapActions(tokenStore, ["storeToken"]),
   },
 };
 </script>
